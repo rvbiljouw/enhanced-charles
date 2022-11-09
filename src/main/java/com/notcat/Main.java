@@ -8,15 +8,21 @@ import java.nio.file.Paths;
 public class Main {
 
     public static void main(String[] args) {
+        if(args.length != 1) {
+            System.err.println("Provide path to charles.jar as the first argument");
+            System.exit(-1);
+            return;
+        }
 
-        Patcher patcher = new Patcher("/users/cat/work/charles.jar");
+        Patcher patcher = new Patcher(args[0]);
         if (patcher.initialize())
             if (patcher.applyTransformers(
-                    Paths.get("/users/cat/work/patched-charles.jar"),
+                    Paths.get("./patched-charles.jar"),
                     new DemoTransformer(),
                     new JA3Transformer(),
                     new HeaderKeysTransformer(),
-                    new ContextTransformer()
+                    new ContextTransformer(),
+                    new JSSETransformer()
             ))
                 System.out.println("All transformers applied successfully");
             else

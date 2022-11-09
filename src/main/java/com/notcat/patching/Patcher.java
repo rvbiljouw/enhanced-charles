@@ -17,6 +17,8 @@ public class Patcher {
     public ClassPool classPool;
     public Exception lastException;
 
+    private ClassList classList;
+
     public Patcher(String inputPath) {
         this(Paths.get(inputPath));
     }
@@ -28,7 +30,8 @@ public class Patcher {
 
     public boolean initialize() {
         try {
-            classPool.insertClassPath(inputPath.toString());
+            this.classList = new ClassList(this);
+            this.classList.load();
             return true;
         } catch (Exception exp) {
             lastException = exp;
@@ -48,7 +51,7 @@ public class Patcher {
             for (ITransformer transformer : transformers) {
 
                 Iterable<TransformedClass> transformedClasses;
-                if ((transformedClasses = transformer.transform(classPool)) == null) {
+                if ((transformedClasses = transformer.transform(classList)) == null) {
                     System.out.printf("Transformer: %s failed\n",
                             transformer.getClass().getSimpleName());
                     continue;

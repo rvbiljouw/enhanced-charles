@@ -1,6 +1,7 @@
 package com.notcat.patching.transformers.impl;
 
 import com.notcat.patching.ClassInjector;
+import com.notcat.patching.ClassList;
 import com.notcat.patching.TransformedClass;
 import com.notcat.patching.transformers.ITransformer;
 import javassist.ClassPool;
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 public class HeaderKeysTransformer implements ITransformer {
 
     @Override
-    public Iterable<TransformedClass> transform(ClassPool classPool) {
-
+    public Iterable<TransformedClass> transform(ClassList classList) {
+        final ClassPool classPool = classList.getPool();
         try {
 
             ArrayList<TransformedClass> transformedClasses = new ArrayList<>();
